@@ -33,6 +33,10 @@ The repository also provides generated outputs for quick review, including:
 - Order recommendations
 - Interactive plot (forecasted sales) - output1, output2, output3
 
+![Output 1](outputs/output1.png)
+![Output 2](outputs/output2.png)
+![Output 3](outputs/output3.png)
+
 If you prefer to regenerate these outputs yourself, run the notebooks above; they will reproduce the forecasts, recommendations, and figures.
 
 ## Context
