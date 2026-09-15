@@ -1,0 +1,8 @@
+# Runtime dependencies for the pipeline (main.py) and the Streamlit app.
+pandas==2.3.1
+numpy==2.2.6
+scikit-learn==1.7.1
+matplotlib==3.10.5
+seaborn==0.13.2
+prophet==1.4.0
+streamlit==1.63.0

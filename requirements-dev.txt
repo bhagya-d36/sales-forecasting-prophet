@@ -1,0 +1,13 @@
+# Development and notebook-only dependencies.
+-r requirements.txt
+
+pytest==9.1.1
+jupyter
+
+# Used only by notebooks/Web_Scraping.ipynb
+requests
+beautifulsoup4==4.13.4
+cloudscraper
+
+# Used only by the interactive widgets in the notebooks
+ipywidgets==8.1.7

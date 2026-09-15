@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Tooling
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Prophet / cmdstanpy scratch files
+*.stan
+*.hpp
