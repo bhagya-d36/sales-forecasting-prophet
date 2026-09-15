@@ -92,52 +92,6 @@ For each product-size line, with lead time converted from weeks to months
 The safety buffer comes from the width of Prophet's confidence interval: the
 less certain the forecast, the more cover is ordered.
 
-## Known limitations
-
-- **Prophet loses to a naive baseline on most lines.** Holding out the last six
-  months (Dec 2024 - May 2025) and comparing against seasonal-naive - simply
-  repeating the same month a year earlier - Prophet wins on only **113 of 484
-  lines (23%)**. Mean absolute error is **3.85 units against the baseline's
-  1.89**, and the gap is widest on the busiest lines (7.84 vs 3.59 on the 203
-  lines selling 2+ units a month). Reproduce with `python main.py backtest`.
-  The forecasts remain a reasonable starting point for a buyer, but should not
-  be trusted over a human read of last year's numbers without further work.
-  This was invisible before, because the metrics were scored on the same rows
-  the model was fitted to.
-- **The series are sparse, which is the likely cause.** Across 41 months, the
-  median product-size line has only 11 months with any sales at all, and one
-  line has a single non-zero month. Prophet is fitted to every line regardless,
-  so yearly seasonality on the thinnest lines is fitting noise. The obvious next
-  step is a fallback - seasonal-naive or a simple average - for lines below a
-  volume threshold, with Prophet reserved for the lines that earn it.
-- **The backtest is a single origin.** One six-month holdout, not a rolling
-  evaluation. Enough to show the problem above, not enough to tune a model on.
-- **Order quantities are rounded, not rounded up.** A buyer who never wants to
-  under-order would use `ceil` instead; this keeps the original behaviour.
-- **106 history rows are negative** (returns or corrections). They are left in
-  the history as-is; only the forecast is floored at zero.
-- **The notebooks duplicate the logic.** They are kept as the original analysis
-  narrative, with their stored outputs, and their paths updated for the new
-  folders. Those stored outputs predate the fixes listed below, so re-running a
-  notebook will not reproduce the numbers it currently displays. `main.py` is
-  the source of truth.
-
-## Fixes applied during the restructure
-
-1. **Forecast dates were off by a month.** The history is month-*start*, but
-   `make_future_dataframe(freq='ME')` returns month-*end* dates, the first of
-   which still falls inside the last observed month. A "6-month forecast" was
-   really 5 new months plus a duplicate. Now month-start throughout.
-2. **Metrics were in-sample.** R²/RMSE/MAE were scored on the same rows the
-   model was fitted to, which measures fit, not forecast skill. Replaced with a
-   holdout backtest against a seasonal-naive baseline.
-3. **Forecasts could go negative.** Prophet's linear trend predicts below zero
-   on sparse lines, and those values fed straight into the order maths.
-   Predictions and their intervals are now floored at zero.
-4. **Safety stock ignored the part month.** Demand over the lead time counted
-   the fractional month, but the safety buffer did not. Both now use the same
-   span.
-
 ## Notebooks
 
 | Notebook | Contents |

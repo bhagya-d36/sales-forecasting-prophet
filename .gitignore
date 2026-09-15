@@ -11,3 +11,6 @@ venv/
 # Prophet / cmdstanpy scratch files
 *.stan
 *.hpp
+
+# Local working notes, not published
+notes.md
